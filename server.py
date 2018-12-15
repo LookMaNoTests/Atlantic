@@ -78,6 +78,7 @@ def update_subscriptions():
         for line in body.split('\n'):
             if line:  # Trailing newline...
                 row = line.replace('\r', '').split('\t')
+                row = [col if col else None for col in row]  # No ''!
                 update_customer(db, row)
                 update_product(db, row)
                 update_subscribers(db, row)
