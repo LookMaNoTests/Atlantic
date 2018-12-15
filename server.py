@@ -1,4 +1,4 @@
-"""A simple Flask web server."""
+"""A simple Flask web server to process subscriptions."""
 
 from contextlib import contextmanager
 from dateutil.parser import parse
