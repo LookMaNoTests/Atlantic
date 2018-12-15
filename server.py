@@ -38,6 +38,16 @@ def update_customer(db, row):
     cursor = db.cursor()
     cursor.execute(cust_insert, row[:6])
 
+def update_product(db, row):
+    prod_insert = '''
+        INSERT IGNORE INTO products (
+            product_id,
+            product_name)
+        VALUES
+            (%s, %s);'''
+    cursor = db.cursor()
+    cursor.execute(prod_insert, row[7:9])
+
 @app.route('/purchases', methods=['POST'])
 def update_subscriptions():
     with subscriptions() as db:
@@ -46,6 +56,7 @@ def update_subscriptions():
             if line:  # Trailing newline...
                 row = line.replace('\r', '').split('\t')
                 update_customer(db, row)
+                update_product(db, row)
                 # ...
                 db.commit()
         return ('', 200)
