@@ -1,7 +1,8 @@
 """A simple Flask web server."""
 
 from contextlib import contextmanager
-from flask import Flask, request
+from dateutil.parser import parse
+from flask import Flask, request, Response
 from mysql.connector import connect
 
 @contextmanager
@@ -48,6 +49,28 @@ def update_product(db, row):
     cursor = db.cursor()
     cursor.execute(prod_insert, row[7:9])
 
+def update_subscribers(db, row):
+    mode, cust, prod = row[6], row[0], row[7]
+    if mode == 'new':
+        sub_insert = '''
+            INSERT INTO subscribers (
+                customer_id,
+                product_id,
+                subscription_date,
+                subscription_price)
+            VALUES
+                (%s, %s, %s, %s);'''
+        price, date = row[-2], parse(row[-1])
+        db.cursor().execute(sub_insert, (cust, prod, date, price))
+    elif mode == 'canceled':
+        sub_update = '''
+            DELETE FROM subscribers
+            WHERE
+                customer_id = %s AND product_id = %s;'''
+        db.cursor().execute(sub_update, (cust, prod))
+    else:
+        return Response(400)
+
 @app.route('/purchases', methods=['POST'])
 def update_subscriptions():
     with subscriptions() as db:
@@ -57,7 +80,7 @@ def update_subscriptions():
                 row = line.replace('\r', '').split('\t')
                 update_customer(db, row)
                 update_product(db, row)
-                # ...
+                update_subscribers(db, row)
                 db.commit()
         return ('', 200)
 
