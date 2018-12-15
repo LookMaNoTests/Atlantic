@@ -7,6 +7,8 @@ from json import dumps
 from mysql.connector import connect
 from sys import exc_info
 
+app = Flask(__name__)
+
 @contextmanager
 def subscriptions():
     db = None
@@ -20,8 +22,6 @@ def subscriptions():
     finally:
         if db:
             db.close()
-
-app = Flask(__name__)
 
 def update_customer(db, row):
     cust_insert = '''
