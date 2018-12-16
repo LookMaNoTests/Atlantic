@@ -149,13 +149,13 @@ on Windows.
         |- customer_id (PK) ---+
         |- customer_first_name |
         |- customer_last_name  |
-        |- customer_address    |  - products
-        |- customer_state      |+---  |- product_id (PK)
-        +- customer_zip_code   ||     +- product_name
-                               ||
-                               || - subscribers
-                               |+-->  |- product_id (CK)
-                               +--->  |- customer_id (CK)
+        |- customer_address    |
+        |- customer_state      |
+        +- customer_zip_code   |
+                               |
+     - products                |  - subscribers
+        |- product_id (PK) ----|--->  |- product_id (CK)
+        +- product_name        +--->  |- customer_id (CK)
                                       |- subscription_date
                                       +- subscription_price
 
