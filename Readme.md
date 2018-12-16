@@ -153,9 +153,9 @@ on Windows.
         |- customer_state      |
         +- customer_zip_code   |
                                |
-     - products                |  - subscribers
-        |- product_id (PK) ----|--->  |- product_id (CK)
-        +- product_name        +--->  |- customer_id (CK)
+    - products                 |  - subscribers
+        |- product_id (PK) ----|-->   |- product_id (CK)
+        +- product_name        +-->   |- customer_id (CK)
                                       |- subscription_date
                                       +- subscription_price
 
