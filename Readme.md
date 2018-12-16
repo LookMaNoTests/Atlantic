@@ -103,7 +103,7 @@ programmatically, so I create a dummy user account. And I hardcode it! So you
 have to also:
 
 ```sql
-CREATE USER atlantic@localhost IDENTIFIED by 'atlantic';
+CREATE USER atlantic@localhost IDENTIFIED BY 'atlantic';
 GRANT ALL PRIVILEGES ON subscriptions.* TO atlantic@localhost;
 FLUSH PRIVILEGES; -- Not sure what this does...
 quit;
